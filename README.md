@@ -1,4 +1,4 @@
-If you move to a new machine:
+How to setup:
 
 git clone https://github.com/DanielKork/dotfilesLinux.git ~/dotfiles
 
