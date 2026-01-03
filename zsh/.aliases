@@ -3,9 +3,7 @@ alias ll='ls -la --color=auto'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias grep='grep --color=auto'
-<<<<<<< Updated upstream
-=======
-alias findon='ddgr'
+alias fion='ddgr'
 
 # Docker shortcut aliases
 alias d='docker'
@@ -22,7 +20,6 @@ alias dexec='docker exec -it'
 alias dbuild='docker build . -t'
 alias dup='docker compose up -d'
 alias ddown='docker compose down'
->>>>>>> Stashed changes
 
 #git shortcuts:
 # Push to current branch
