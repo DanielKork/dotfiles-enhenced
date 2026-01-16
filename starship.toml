@@ -43,7 +43,7 @@ deleted = "🗑"
 
 # Directory styling
 [directory]
-truncation_length = 3   # Effectively disables truncation
+truncation_length = 1000   # Effectively disables truncation
 truncate_to_repo = false   # Always show full path, even in git repos
 format = "[$path]($style)[$read_only]($read_only_style) "
 style = "bold cyan"

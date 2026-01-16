@@ -248,17 +248,17 @@ brew bundle --file=~/dotfiles-enhanced/dotfiles-enhanced/packages/Brewfile
 sudo apt install bat eza ripgrep fd-find
 ```
 
-## 📸 Screenshots
+<!-- ## 📸 Screenshots
 
-> Add screenshots of your terminal setup here!
+> Add screenshots of your terminal setup here! -->
 
 ## 🤝 Contributing
 
 Feel free to fork and customize for your own use!
 
-## 📄 License
+<!-- ## 📄 License
 
-MIT License - Feel free to use and modify!
+MIT License - Feel free to use and modify! -->
 
 ## 🙏 Credits
 
