@@ -4,7 +4,7 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 # Load Zoxide if available
-[ -f ~/dotfiles/zoxide/zoxide.bash ] && source ~/dotfiles/zoxide/zoxide.bash
+[ -f ~/dotfiles-enhanced/dotfiles-enhanced/zoxide/zoxide.bash ] && source ~/dotfiles-enhanced/dotfiles-enhanced/zoxide/zoxide.bash
 
 # Fancy Bash prompt
 PS1='\[\e[0;32m\]\u@\[\e[0;34m\]\w\[\e[m\] \$ '

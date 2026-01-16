@@ -1,0 +1,35 @@
+# Homebrew Bundle for macOS
+# Install with: brew bundle --file=~/dotfiles/packages/Brewfile
+
+# Taps
+tap "homebrew/bundle"
+tap "homebrew/cask-fonts"
+
+# CLI Tools
+brew "fzf"              # Fuzzy finder
+brew "neovim"           # Modern vim
+brew "zoxide"           # Smart cd replacement
+brew "bat"              # Better cat
+brew "eza"              # Modern ls
+brew "ripgrep"          # Fast grep
+brew "fd"               # Fast find
+brew "tmux"             # Terminal multiplexer
+brew "starship"         # Modern prompt
+brew "git"              # Version control
+brew "gh"               # GitHub CLI
+brew "jq"               # JSON processor
+brew "htop"             # Process viewer
+brew "tree"             # Directory tree
+brew "wget"             # Download tool
+brew "curl"             # Transfer tool
+brew "zsh"              # Shell
+
+# Optional but useful
+brew "tldr"             # Simplified man pages
+brew "diff-so-fancy"    # Better git diffs
+brew "lazygit"          # Git TUI
+brew "lazydocker"       # Docker TUI
+
+# Fonts (optional)
+cask "font-fira-code-nerd-font"
+cask "font-jetbrains-mono-nerd-font"

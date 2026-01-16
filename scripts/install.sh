@@ -3,20 +3,34 @@
 echo "🔗 Linking dotfiles..."
 
 # Zsh files
-ln -sf ~/dotfiles/zsh/.zshrc ~/.zshrc
-ln -sf ~/dotfiles/zsh/.aliases ~/.aliases
-ln -sf ~/dotfiles/zsh/.functions ~/.functions
-ln -sf ~/dotfiles/zsh/.exports ~/.exports
-ln -sf ~/dotfiles/zsh/.zprofile ~/.zprofile
-ln -sf ~/dotfiles/zsh/.zshenv ~/.zshenv
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.zshrc ~/.zshrc
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.aliases ~/.aliases
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.functions ~/.functions
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.exports ~/.exports
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.zprofile ~/.zprofile
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.zshenv ~/.zshenv
 
 # Bash files
-ln -sf ~/dotfiles/bash/.bashrc ~/.bashrc
-ln -sf ~/dotfiles/bash/.bash_aliases ~/.bash_aliases
-ln -sf ~/dotfiles/bash/.bash_profile ~/.bash_profile
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/bash/.bashrc ~/.bashrc
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/bash/.bash_aliases ~/.bash_aliases
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/bash/.bash_profile ~/.bash_profile
 
 # Git config
-ln -sf ~/dotfiles/git/.gitconfig ~/.gitconfig
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/git/.gitconfig ~/.gitconfig
+
+# Tmux config
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/tmux/.tmux.conf ~/.tmux.conf
+
+# Neovim config
+mkdir -p ~/.config/nvim
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/nvim/init.lua ~/.config/nvim/init.lua
+
+# Starship config
+ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/starship.toml ~/.config/starship.toml
+
+# SSH config (optional - user should customize first)
+# mkdir -p ~/.ssh
+# ln -sf ~/dotfiles-enhanced/dotfiles-enhanced/ssh/config ~/.ssh/config
 
 echo "✅ Dotfiles linked successfully!"
 
@@ -47,11 +61,21 @@ install_dependencies() {
 	eval "$(/opt/homebrew/bin/brew shellenv)"
   fi
 
-  echo "📦 Installing fzf, neovim and zoxide..."
-  brew install fzf neovim zoxide
+  echo "📦 Installing packages from Brewfile..."
+  if [ -f ~/dotfiles-enhanced/dotfiles-enhanced/packages/Brewfile ]; then
+    brew bundle --file=~/dotfiles-enhanced/dotfiles-enhanced/packages/Brewfile
+  else
+    # Fallback to manual installation
+    brew install fzf neovim zoxide bat eza ripgrep fd tmux starship git gh jq htop
+  fi
 
   echo "🔗 Installing FZF keybindings..."
   $(brew --prefix)/opt/fzf/install --all --no-bash --no-fish
+
+  echo "🎨 Installing Starship prompt..."
+  if ! command -v starship > /dev/null 2>&1; then
+    curl -sS https://starship.rs/install.sh | sh -s -- -y
+  fi
 
   elif [ "$OS" = "linux" ]; then
     # Ubuntu/Debian
@@ -59,10 +83,20 @@ install_dependencies() {
     sudo apt update
 
     echo "📦 Installing required tools..."
-    sudo apt install -y fzf neovim zsh wofi xdg-utils libgtk-3-bin
+    sudo apt install -y fzf neovim zsh wofi xdg-utils libgtk-3-bin bat ripgrep fd-find htop tmux jq curl wget git build-essential
 
     echo "🔗 Setting up FZF keybindings..."
     yes | /usr/share/doc/fzf/examples/install --no-bash --no-fish 2>/dev/null || true
+
+    echo "🎨 Installing Starship prompt..."
+    if ! command -v starship > /dev/null 2>&1; then
+      curl -sS https://starship.rs/install.sh | sh -s -- -y
+    fi
+
+    echo "📦 Installing Zoxide..."
+    if ! command -v zoxide > /dev/null 2>&1; then
+      curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+    fi
 
 
     #sudo apt update

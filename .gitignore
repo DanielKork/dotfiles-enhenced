@@ -1,0 +1,43 @@
+# Dotfiles .gitignore
+
+# Machine-specific configs (not tracked)
+zsh/.zshrc.local
+bash/.bashrc.local
+.env.local
+
+# Backup directory contents
+backup/*
+!backup/.gitkeep
+
+# Trash directory
+.trash/
+
+# SSH keys (NEVER commit these!)
+ssh/id_*
+ssh/*.pem
+ssh/*.key
+ssh/known_hosts
+
+# Zsh plugin directories (installed locally)
+zsh-plugins/zsh-syntax-highlighting/
+zsh-plugins/zsh-autosuggestions/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# Editor files
+.vscode/
+.idea/
+*.sublime-*
+
+# Neovim plugin data
+nvim/plugin/
+nvim/lazy-lock.json
+
+# Temporary files
+*.tmp
+*.log

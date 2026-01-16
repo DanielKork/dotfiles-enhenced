@@ -17,8 +17,8 @@ restore() {
 
 
 edif() {
-#  nano "$(find ~/dotfiles -type f | fzf)"
-   nvim "$(find ~/dotfiles -type f | fzf)" 
+#  nano "$(find ~/dotfiles-enhanced/dotfiles-enhanced -type f | fzf)"
+   nvim "$(find ~/ -type f | fzf)" 
 }
 
 
@@ -102,10 +102,72 @@ gacp() {
   git push
 }
 
-
 gmergef() {
   local branch
   branch=$(git branch --all | grep -v HEAD | sed 's/remotes\///' | sed 's/\* //' | fzf)
   [ -n "$branch" ] && git merge "${branch##*/}"
 }
+
+# Interactive branch switcher with fzf
+gco() {
+  local branch
+  branch=$(git branch --all | grep -v HEAD | sed 's/remotes\///' | sed 's/\* //' | fzf --preview 'git log --oneline --graph --color=always {}')
+  if [ -n "$branch" ]; then
+    git checkout "${branch##*/}"
+  fi
+}
+
+# Interactive git log viewer with fzf
+glogf() {
+  git log --oneline --graph --color=always --all | \
+    fzf --ansi --no-sort --reverse --tiebreak=index \
+        --preview 'echo {} | grep -o "[a-f0-9]\{7,\}" | head -1 | xargs git show --color=always' \
+        --bind 'enter:execute(echo {} | grep -o "[a-f0-9]\{7,\}" | head -1 | xargs git show | less -R)'
+}
+
+# Interactive stash viewer and applier
+gstash() {
+  local stash
+  stash=$(git stash list | fzf --preview 'echo {} | cut -d: -f1 | xargs git stash show -p --color=always')
+  if [ -n "$stash" ]; then
+    local stash_id=$(echo "$stash" | cut -d: -f1)
+    echo "Apply stash $stash_id? (y/n)"
+    read -r response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+      git stash pop "$stash_id"
+    fi
+  fi
+}
+
+# Quick commit with auto-generated message based on changes
+gquick() {
+  local files_changed=$(git diff --cached --name-only | wc -l)
+  if [ "$files_changed" -eq 0 ]; then
+    echo "⚠️  No staged changes. Staging all changes..."
+    git add .
+  fi
+  
+  local msg="Quick update: $(git diff --cached --name-only | head -3 | tr '\n' ', ' | sed 's/,$//')"
+  git commit -m "$msg"
+  echo "✅ Committed: $msg"
+}
+
+# Create a new branch and switch to it
+gnew() {
+  if [ -z "$1" ]; then
+    echo "Usage: gnew <branch-name>"
+    return 1
+  fi
+  git checkout -b "$1"
+}
+
+# Delete branches interactively with fzf
+gdel() {
+  local branches
+  branches=$(git branch | grep -v "^\*" | fzf --multi --preview 'git log --oneline --graph --color=always {}')
+  if [ -n "$branches" ]; then
+    echo "$branches" | xargs git branch -d
+  fi
+}
+
 

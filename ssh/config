@@ -1,0 +1,47 @@
+# SSH Configuration Template
+# Copy this to ~/.ssh/config and customize for your needs
+
+# Global defaults
+Host *
+    # Use SSH keys by default
+    PreferredAuthentications publickey,keyboard-interactive,password
+    
+    # Keep connections alive
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
+    
+    # Reuse connections for speed
+    ControlMaster auto
+    ControlPath ~/.ssh/sockets/%r@%h-%p
+    ControlPersist 600
+    
+    # Security settings
+    HashKnownHosts yes
+    
+    # Forward SSH agent
+    ForwardAgent no
+
+# Example host configurations (uncomment and customize)
+
+# Host github
+#     HostName github.com
+#     User git
+#     IdentityFile ~/.ssh/id_ed25519_github
+#     IdentitiesOnly yes
+
+# Host myserver
+#     HostName example.com
+#     User myusername
+#     Port 22
+#     IdentityFile ~/.ssh/id_rsa
+#     ForwardAgent yes
+
+# Host dev
+#     HostName 192.168.1.100
+#     User developer
+#     Port 2222
+#     IdentityFile ~/.ssh/id_ed25519
+
+# Host *.internal
+#     User admin
+#     ProxyJump bastion.example.com

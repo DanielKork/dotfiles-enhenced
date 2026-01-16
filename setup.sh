@@ -1,7 +1,11 @@
 #!/bin/bash
 
+# Get the directory where this script is located
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPTS_DIR="$DOTFILES_DIR/scripts"
+
 # Go into scripts folder
-cd ~/dotfiles/scripts
+cd "$SCRIPTS_DIR"
 
 # Source the install.sh file to use its functions
 source ./install.sh

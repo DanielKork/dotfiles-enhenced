@@ -1,0 +1,34 @@
+# Linux Package List (Ubuntu/Debian)
+# Install with: xargs -a packages.txt sudo apt install -y
+
+# Core tools
+fzf
+neovim
+zsh
+tmux
+git
+curl
+wget
+build-essential
+
+# Modern CLI tools
+bat
+ripgrep
+fd-find
+htop
+tree
+jq
+
+# Desktop environment tools
+wofi
+xdg-utils
+libgtk-3-bin
+
+# Optional but useful
+tldr
+silversearcher-ag
+
+# Note: Some tools need manual installation:
+# - starship: curl -sS https://starship.rs/install.sh | sh
+# - eza: cargo install eza (or download from GitHub releases)
+# - zoxide: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
