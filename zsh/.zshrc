@@ -60,3 +60,8 @@ setopt SHARE_HISTORY        # Share history between sessions
 setopt APPEND_HISTORY       # Append to history file
 setopt INC_APPEND_HISTORY   # Add commands immediately
 
+
+# Welcome Message
+if [ -f ~/dotfiles-enhanced/dotfiles-enhanced/scripts/welcome.sh ]; then
+  ~/dotfiles-enhanced/dotfiles-enhanced/scripts/welcome.sh
+fi

@@ -62,8 +62,6 @@ keymap('n', '<leader>q', ':q<CR>', { desc = 'Quit' })
 keymap('n', '<leader>e', ':Explore<CR>', { desc = 'Open file explorer' })
 
 -- Plugin Manager Setup (lazy.nvim)
--- Uncomment and configure when ready to add plugins
---[[
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -78,10 +76,65 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
-  -- Add plugins here
-  -- Example: { 'nvim-treesitter/nvim-treesitter', build = ':TSUpdate' },
+  -- Theme: Tokyonight
+  {
+    'folke/tokyonight.nvim',
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.cmd([[colorscheme tokyonight]])
+    end,
+  },
+
+  -- Status Line: Lualine
+  {
+    'nvim-lualine/lualine.nvim',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    config = function()
+      require('lualine').setup({
+        options = { theme = 'tokyonight' }
+      })
+    end,
+  },
+
+  -- Fuzzy Finder: Telescope
+  {
+    'nvim-telescope/telescope.nvim',
+    tag = '0.1.6',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    config = function()
+      local builtin = require('telescope.builtin')
+      vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Find Files' })
+      vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Live Grep' })
+      vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = 'Find Buffers' })
+      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Find Help' })
+    end,
+  },
+
+  -- Syntax Highlighting: Treesitter
+  {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter.configs').setup({
+        ensure_installed = { "c", "lua", "vim", "vimdoc", "query", "bash", "python", "javascript", "toml", "markdown" },
+        auto_install = true,
+        highlight = { enable = true },
+      })
+    end,
+  },
+  
+  -- Keybinding Helper: WhichKey
+  {
+    "folke/which-key.nvim",
+    event = "VeryLazy",
+    init = function()
+      vim.o.timeout = true
+      vim.o.timeoutlen = 300
+    end,
+    opts = {}
+  },
 })
---]]
 
 -- Auto commands
 local augroup = vim.api.nvim_create_augroup
@@ -102,4 +155,4 @@ autocmd('BufWritePre', {
   command = [[%s/\s\+$//e]],
 })
 
-print("Neovim config loaded! 🚀")
+print("Neovim config loaded! 🚀 Plugins will install on restart.")

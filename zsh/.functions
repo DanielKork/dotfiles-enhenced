@@ -4,6 +4,11 @@ trash() {
   mv "$@" ~/.trash/
 }
 
+# Cheat sheet (cheat.sh)
+cheat() {
+  curl "cheat.sh/$1"
+}
+
 # Restore a file from trash
 restore() {
   file="$1"

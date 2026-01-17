@@ -108,6 +108,25 @@ install_dependencies() {
   else
     echo "⚠️ Unsupported OS: $OS"
   fi
+  echo "🔌 Installing Zsh Plugins..."
+  
+  # Syntax Highlighting
+  if [ ! -d "$HOME/dotfiles-enhanced/dotfiles-enhanced/zsh-plugins/zsh-syntax-highlighting" ]; then
+    echo "  ✨ Installing zsh-syntax-highlighting..."
+    git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/dotfiles-enhanced/dotfiles-enhanced/zsh-plugins/zsh-syntax-highlighting
+  else
+    echo "  ✅ zsh-syntax-highlighting already installed"
+  fi
+
+  # Auto Suggestions
+  if [ ! -d "$HOME/dotfiles-enhanced/dotfiles-enhanced/zsh-plugins/zsh-autosuggestions" ]; then
+    echo "  ✨ Installing zsh-autosuggestions..."
+    git clone https://github.com/zsh-users/zsh-autosuggestions ~/dotfiles-enhanced/dotfiles-enhanced/zsh-plugins/zsh-autosuggestions
+  else
+    echo "  ✅ zsh-autosuggestions already installed"
+  fi
+
+  echo "🎉 Dependencies installation complete!"
 }
 
 
@@ -115,7 +134,7 @@ setup_zsh() {
   # Check if zsh is installed
   if ! command -v zsh >/dev/null 2>&1; then
     echo "🐚 Installing Zsh..."
-   if [ "$OS" = "mac" ]; then
+    if [ "$OS" = "mac" ]; then
       brew install zsh
     elif [ "$OS" = "linux" ]; then
       sudo apt install -y zsh
