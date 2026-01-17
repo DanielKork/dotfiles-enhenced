@@ -114,6 +114,7 @@ require('lazy').setup({
   -- Syntax Highlighting: Treesitter
   {
     'nvim-treesitter/nvim-treesitter',
+    tag = 'v0.9.3', -- Pin to v0.9.3 to avoid breaking changes in master
     build = ':TSUpdate',
     config = function()
       require('nvim-treesitter.configs').setup({
