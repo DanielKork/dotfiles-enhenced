@@ -1,8 +1,5 @@
 # Load Zsh Environment
-source ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.zshenv
-
-# Apple Silicon Homebrew fix
-export PATH="/opt/homebrew/bin:$PATH"
+[ -f ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.zshenv ] && source ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.zshenv
 
 # Load Exports
 [ -f ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.exports ] && source ~/dotfiles-enhanced/dotfiles-enhanced/zsh/.exports
@@ -29,11 +26,19 @@ if command -v zoxide &> /dev/null; then
 fi
 
 # Apple Silicon Homebrew support
-[ -d /opt/homebrew/bin ] && export PATH="/opt/homebrew/bin:$PATH"
+if [ -d /opt/homebrew/bin ]; then
+  export PATH="/opt/homebrew/bin:$PATH"
+  eval "$(/opt/homebrew/bin/brew shellenv)" 2>/dev/null
+fi
+
+# Intel Mac Homebrew support
+if [ -d /usr/local/bin ]; then
+  export PATH="/usr/local/bin:$PATH"
+fi
 
 # Custom keybindings
-bindkey '^o' openapp_widget
-bindkey '^a' editfile_widget
+bindkey '^o' openapp_widget 2>/dev/null
+bindkey '^a' editfile_widget 2>/dev/null
 
 # Zsh Plugins
 # Syntax highlighting (install: git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/dotfiles-enhanced/dotfiles-enhanced/zsh-plugins/zsh-syntax-highlighting)
@@ -43,9 +48,10 @@ bindkey '^a' editfile_widget
 [ -f ~/dotfiles-enhanced/dotfiles-enhanced/zsh-plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ] && source ~/dotfiles-enhanced/dotfiles-enhanced/zsh-plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # Starship Prompt (install: curl -sS https://starship.rs/install.sh | sh)
+# IMPORTANT: Set config BEFORE init
+export STARSHIP_CONFIG=~/dotfiles-enhanced/dotfiles-enhanced/starship.toml
 if command -v starship &> /dev/null; then
   eval "$(starship init zsh)"
-  export STARSHIP_CONFIG=~/dotfiles-enhanced/dotfiles-enhanced/starship.toml
 else
   # Fallback to basic prompt if Starship not installed
   autoload -Uz colors && colors
