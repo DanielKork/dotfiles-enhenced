@@ -28,7 +28,7 @@ Modern, cross-platform dotfiles with beautiful prompts, powerful tools, and smar
 
 ```bash
 # Clone the repository
-git clone https://github.com/DanielKork/dotfilesLinux.git ~/dotfiles-enhanced/dotfiles-enhanced
+git clone https://github.com/DanielKork/dotfiles-enhanced.git ~/dotfiles-enhanced/dotfiles-enhanced
 
 # Navigate to dotfiles
 cd ~/dotfiles-enhanced/dotfiles-enhanced
