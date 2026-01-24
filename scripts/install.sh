@@ -51,31 +51,35 @@ install_dependencies() {
   if [ "$OS" = "mac" ]; then
     # macOS: use Homebrew
     if ! command -v brew >/dev/null 2>&1; then
-     echo "🍺 Installing Homebrew..."
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+      echo "🍺 Installing Homebrew..."
+      /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-	# Load Homebrew path into current shell (very important!)
-	echo "🔁 Adding Homebrew to PATH..."
-	echo "🔁 Ensuring /opt/homebrew/bin is in PATH"
-	echo 'export PATH="/opt/homebrew/bin:$PATH"' >> ~/.zshrc
-	eval "$(/opt/homebrew/bin/brew shellenv)"
-  fi
+      # Load Homebrew path into current shell (very important!)
+      echo "🔁 Adding Homebrew to PATH..."
+      if [ -d "/opt/homebrew/bin" ]; then
+        # Apple Silicon
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      elif [ -d "/usr/local/bin/brew" ]; then
+        # Intel Mac
+        eval "$(/usr/local/bin/brew shellenv)"
+      fi
+    fi
 
-  echo "📦 Installing packages from Brewfile..."
-  if [ -f ~/dotfiles-enhanced/dotfiles-enhanced/packages/Brewfile ]; then
-    brew bundle --file=~/dotfiles-enhanced/dotfiles-enhanced/packages/Brewfile
-  else
-    # Fallback to manual installation
-    brew install fzf neovim zoxide bat eza ripgrep fd tmux starship git gh jq htop
-  fi
+    echo "📦 Installing packages from Brewfile..."
+    if [ -f ~/dotfiles-enhanced/dotfiles-enhanced/packages/Brewfile ]; then
+      brew bundle --file=~/dotfiles-enhanced/dotfiles-enhanced/packages/Brewfile
+    else
+      # Fallback to manual installation
+      brew install fzf neovim zoxide bat eza ripgrep fd tmux starship git gh jq htop
+    fi
 
-  echo "🔗 Installing FZF keybindings..."
-  $(brew --prefix)/opt/fzf/install --all --no-bash --no-fish
+    echo "🔗 Installing FZF keybindings..."
+    "$(brew --prefix)/opt/fzf/install" --all --no-bash --no-fish || true
 
-  echo "🎨 Installing Starship prompt..."
-  if ! command -v starship > /dev/null 2>&1; then
-    curl -sS https://starship.rs/install.sh | sh -s -- -y
-  fi
+    echo "🎨 Installing Starship prompt..."
+    if ! command -v starship > /dev/null 2>&1; then
+      curl -sS https://starship.rs/install.sh | sh -s -- -y
+    fi
 
   elif [ "$OS" = "linux" ]; then
     # Ubuntu/Debian
@@ -98,16 +102,22 @@ install_dependencies() {
       curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
     fi
 
-
-    #sudo apt update
-    #sudo apt install -y fzf neovim
-
-    # Optional: fzf keybindings
-    #yes | /usr/share/doc/fzf/examples/install --no-bash --no-fish
+    echo "📦 Installing eza..."
+    if ! command -v eza > /dev/null 2>&1; then
+      sudo apt install -y eza 2>/dev/null || {
+        # Fallback for older Ubuntu versions
+        sudo mkdir -p /etc/apt/keyrings
+        wget -qO- https://raw.githubusercontent.com/eza-community/eza/main/deb.asc | sudo gpg --dearmor -o /etc/apt/keyrings/gierens.gpg
+        echo "deb [signed-by=/etc/apt/keyrings/gierens.gpg] http://deb.gierens.de stable main" | sudo tee /etc/apt/sources.list.d/gierens.list
+        sudo apt update
+        sudo apt install -y eza
+      }
+    fi
 
   else
     echo "⚠️ Unsupported OS: $OS"
   fi
+
   echo "🔌 Installing Zsh Plugins..."
   
   # Syntax Highlighting

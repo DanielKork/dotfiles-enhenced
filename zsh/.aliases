@@ -1,5 +1,9 @@
-# Common Shortcuts
-alias ll='ls -la --color=auto'
+# Common Shortcuts (cross-platform)
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  alias ll='ls -laG'
+else
+  alias ll='ls -la --color=auto'
+fi
 alias ..='cd ..'
 alias ...='cd ../..'
 alias grep='grep --color=auto'
@@ -82,10 +86,16 @@ alias dev='cd ~/Development'
 alias dl='cd ~/Downloads'
 alias docs='cd ~/Documents'
 
-# System shortcuts (Linux)
-alias update='sudo apt update && sudo apt upgrade'
-alias cleanup='sudo apt autoremove && sudo apt autoclean'
-alias install='sudo apt install'
+# System shortcuts (cross-platform)
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  alias update='brew update && brew upgrade'
+  alias cleanup='brew cleanup && brew autoremove'
+  alias install='brew install'
+else
+  alias update='sudo apt update && sudo apt upgrade'
+  alias cleanup='sudo apt autoremove && sudo apt autoclean'
+  alias install='sudo apt install'
+fi
 
 # Tmux shortcuts
 alias ta='tmux attach -t'
